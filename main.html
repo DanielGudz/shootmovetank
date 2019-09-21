@@ -1,0 +1,134 @@
+<html> 
+ <head>
+    <title></title> 
+</head>
+ <body>
+    <p align="center"> 
+      <canvas id="mycanvas"></canvas> 
+    </p>
+ </body> 
+ <script src="processing.js"></script> 
+ <script>
+var sketchProc = function(processingInstance) {
+with (processingInstance) {
+//START
+	size(600, 400); 
+	frameRate(30);
+
+noStroke();
+var posx = 150;
+var posy = 150;
+var speed = 10;
+var dir = RIGHT;
+var isProjectile = 0;
+var projectileY = posy;
+var projectileX = posx;
+var projectileDir;
+
+keyPressed = function() {
+    if(keyCode === 32 && isProjectile === 0){
+        isProjectile = 1;
+        if (dir === UP){
+            projectileY=posy-32;
+            projectileX=posx+23;
+            projectileDir = UP;
+        }
+        if (dir === LEFT){
+            projectileY = posy+24;
+            projectileX = posx-36;
+            projectileDir = LEFT;
+        }
+        if (dir === RIGHT){
+            projectileX = posx+77;
+            projectileY = posy+20;
+            projectileDir = RIGHT;
+        }
+        if (dir === DOWN){
+            projectileX = posx+23;
+            projectileY = posy+78;
+            projectileDir = DOWN;
+        }
+    }
+    else if(keyCode === LEFT){
+        if(posx>=36){        
+            posx -= speed;
+            dir = LEFT;
+        }
+    }
+    else if(keyCode === RIGHT){
+        if(posx<=314){
+            posx += speed;
+            dir = RIGHT;
+        }
+    }
+    else if(keyCode === UP){
+        if(posy > 36){
+            posy-=speed;
+            dir = UP;
+        }
+    }
+    else if(keyCode === DOWN){
+        if(posy < 318){
+            posy+=speed;
+            dir = DOWN;
+        }
+    }
+};
+
+draw = function() {
+    background(179, 209, 144);
+    fill(72, 143, 49);
+    rect(posx, posy, 50, 50);
+    
+    if(dir === LEFT){
+        rect(posx-36, posy+22, 36, 6);
+    }
+    else if(dir === RIGHT){
+        rect(posx+50, posy+20, 36, 6);
+    }
+    else if(dir === UP){
+        rect(posx+22, posy-36, 6, 36);
+
+    }
+    else if(dir === DOWN){
+        rect(posx+22,posy+50,6,36);
+    }
+    
+    if(isProjectile === 1){
+        if(projectileDir === UP){
+            projectileY = projectileY-speed;
+        }
+        
+        else if(projectileDir === LEFT){
+            projectileX = projectileX-speed;
+        }
+        
+        else if(projectileDir === RIGHT){
+            projectileX = projectileX+speed;
+        }
+        
+        else if (projectileDir === DOWN){
+            projectileY=projectileY+speed;
+        }
+        
+        fill(0, 0, 0);
+        rect(projectileX, projectileY, 4, 4,2);
+    }
+    
+    
+    if (projectileY<=0 || projectileX>=400 || projectileY>=400 || projectileX<=0){
+        isProjectile = 0;
+        projectileY = 217;
+    }
+};
+
+
+//END
+}
+};
+
+var canvas = document.getElementById("mycanvas"); 
+var processingInstance = new Processing(canvas, sketchProc); 
+ </script>
+
+</html>
